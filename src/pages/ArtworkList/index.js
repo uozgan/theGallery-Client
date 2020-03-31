@@ -32,6 +32,7 @@ export default function ArtworkList() {
               hearts={artwork.hearts}
               minimumBid={artwork.minimumBid}
               showLink={true}
+              bidCount={artwork.bids.length}
             />
           );
         })}

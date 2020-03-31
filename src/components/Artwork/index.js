@@ -15,7 +15,7 @@ export default function Artwork(props) {
       />{" "}
       <br />
       <p>Likes: {props.hearts}</p>
-      <p>Bids: {props.minimumBid}</p>
+      <p>Bids: {props.bidCount}</p>
       {props.showLink ? (
         <Link to={`/artworks/${props.id}`}>
           <Button>See Details</Button>
