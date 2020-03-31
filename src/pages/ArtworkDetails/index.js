@@ -8,41 +8,57 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
+import Alert from "react-bootstrap/Alert";
 import { Col } from "react-bootstrap";
 import { fetchArtworkById } from "../../store/artworkDetails/actions";
 import { selectArtworkDetails } from "../../store/artworkDetails/selectors";
 import { increaseHeart } from "../../store/artworkDetails/actions";
 import { selectUser } from "../../store/user/selectors";
+import Loading from "../../components/Loading";
+import { postBid } from "../../store/artworkDetails/actions";
 
 export default function ArtworkDetails() {
   const { id } = useParams();
   const artwork = useSelector(selectArtworkDetails);
-  const { token } = useSelector(selectUser);
-  console.log("Artwork", artwork.bids);
-
-  const allBids = artwork.bids.map(bid => {
-    return bid.amount;
-  });
-
-  const highestBid = Math.max(...allBids);
-
-  const [currentBid, setCurrentBid] = useState(highestBid);
-  //console.log("All Bids", allBids);
-  //console.log("Highest Bid", highestBid);
+  const { token, email } = useSelector(selectUser);
+  console.log("Artwork", artwork);
+  const [alertShow, setAlertShow] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchArtworkById(id));
   }, [dispatch, id]);
 
+  const allBids = artwork.bids.map(bid => {
+    return bid.amount;
+  });
+
+  const [currentBid, setCurrentBid] = useState(Math.max(...allBids) + 1);
+
   function heartIncreaser(event) {
     event.preventDefault();
 
     artwork.hearts++;
-    console.log("artwork?", artwork);
+    //console.log("artwork?", artwork);
     dispatch(increaseHeart(artwork.hearts));
   }
 
+  function submitBid(event) {
+    event.preventDefault();
+
+    console.log("current bid", currentBid);
+    console.log("Email", email);
+    console.log("Id", id);
+
+    if (currentBid > Math.max(...allBids)) {
+      dispatch(postBid(currentBid, email, id));
+      setAlertShow(false);
+    } else {
+      setAlertShow(true);
+    }
+  }
+
+  if (allBids === []) return <Loading />;
   return (
     <>
       <Container>
@@ -84,16 +100,20 @@ export default function ArtworkDetails() {
         </Table>
         {token ? (
           <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
+            <Alert show={alertShow} variant="danger">
+              Please enter a higher amount!
+            </Alert>
             <InputGroup className="mb-3">
               <InputGroup.Prepend>
                 <InputGroup.Text>Amount (€)</InputGroup.Text>
               </InputGroup.Prepend>
               <FormControl
                 aria-label="Amount (to the nearest dollar)"
-                placeholder={highestBid + 1}
+                placeholder={Math.max(...allBids) + 1}
+                onChange={event => setCurrentBid(parseInt(event.target.value))}
               />
               <InputGroup.Append>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" onClick={submitBid}>
                   Bid
                 </Button>
               </InputGroup.Append>

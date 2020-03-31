@@ -4,16 +4,22 @@ import { selectArtworkDetails } from "./selectors";
 import {
   appLoading,
   appDoneLoading,
-  showMessageWithTimeout,
-  setMessage
+  showMessageWithTimeout
 } from "../appState/actions";
+import { selectUser } from "../user/selectors";
 
 export const ARTWORK_DETAILS_FETCHED = "ARTWORK_DETAILS_FETCHED";
 //export const HEARTS_UPDATED = "HEARTS_UPDATED";
+export const BID_POST_SUCCESS = "BID_POST_SUCCESS";
 
 const artworkDetailsFetched = artwork => ({
   type: ARTWORK_DETAILS_FETCHED,
   payload: artwork
+});
+
+const bidPostSuccess = bid => ({
+  type: BID_POST_SUCCESS,
+  payload: bid
 });
 
 // const heartsUpdated = hearts => ({
@@ -47,6 +53,37 @@ export const increaseHeart = hearts => {
     );
 
     //dispatch(heartsUpdated(result.data.artwork.hearts));
+    dispatch(appDoneLoading());
+  };
+};
+
+export const postBid = (amount, email, artworkId) => {
+  return async (dispatch, getState) => {
+    const { id } = selectArtworkDetails(getState());
+    const { token } = selectUser(getState());
+
+    dispatch(appLoading());
+
+    const response = await axios.post(
+      `${apiUrl}/artworks/${id}/bids`,
+      {
+        amount,
+        email,
+        artworkId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log("Yep!", response);
+    dispatch(
+      showMessageWithTimeout("success", false, response.data.message, 3000)
+    );
+    dispatch(bidPostSuccess(response.data.bid));
+    //dispatch(console.log("Yep!", response));
     dispatch(appDoneLoading());
   };
 };
