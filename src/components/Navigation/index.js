@@ -10,7 +10,9 @@ import LoggedOut from "./LoggedOut";
 
 export default function Navigation() {
   const token = useSelector(selectToken);
-  const isArtist = useSelector(selectUser);
+  const { isArtist } = useSelector(selectUser);
+
+  //console.log("isArtist", isArtist);
 
   const loginLogoutControls = token ? <LoggedIn /> : <LoggedOut />;
 
@@ -23,9 +25,9 @@ export default function Navigation() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav style={{ width: "100%" }} fill>
           <NavbarItem path="/" linkText="Artworks" />
-          {/* {isArtist ? ( */}
-          <NavbarItem path="/auction" linkText="Start an Auction" />
-          {/* ) : null} */}
+          {token && isArtist ? (
+            <NavbarItem path="/auction" linkText="Start an Auction" />
+          ) : null}
           {loginLogoutControls}
         </Nav>
       </Navbar.Collapse>
