@@ -16,7 +16,7 @@ export default function ArtworkList() {
     dispatch(fetchArtworks());
   }, [dispatch]);
 
-  return artworks == [] ? null : (
+  return artworks === [] ? null : (
     <>
       <Jumbotron>
         <h1>Artwork List</h1>

@@ -37,11 +37,10 @@ export const postArtwork = (title, minimumBid, imageUrl) => {
   return async (dispatch, getState) => {
     const { token, id } = selectUser(getState());
 
-    console.log("Id", id);
+    // console.log("Id", id);
+    // console.log("User Id", userId);
 
     const userId = id;
-
-    console.log("User Id", userId);
 
     // console.log(title, minimumBid, imageUrl);
     dispatch(appLoading());
