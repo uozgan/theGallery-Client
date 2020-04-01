@@ -26,14 +26,13 @@ export default function SignUp() {
   function submitForm(event) {
     event.preventDefault();
 
-    console.log("isArtist", isArtist);
+    //console.log("isArtist", isArtist);
 
     dispatch(signUp(name, email, password, isArtist));
 
     setEmail("");
     setPassword("");
     setName("");
-    setIsArtist(false);
   }
 
   return (
