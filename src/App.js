@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAppLoading } from "./store/appState/selectors";
 import { getUserWithStoredToken } from "./store/user/actions";
 import { Jumbotron } from "react-bootstrap";
+import MyArtwork from "./pages/MyArtwork";
 
 // const Home = () => (
 //   <Jumbotron>
@@ -45,6 +46,7 @@ function App() {
         <Route path="/signup" component={SignUp} />
         <Route path="/login" component={Login} />
         <Route path="/artworks/:id" component={ArtworkDetails} />
+        <Route path="/auction" component={MyArtwork} />
       </Switch>
     </div>
   );

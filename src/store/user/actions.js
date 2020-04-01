@@ -7,6 +7,7 @@ import {
   showMessageWithTimeout,
   setMessage
 } from "../appState/actions";
+import { selectUser } from "../user/selectors";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";
@@ -108,5 +109,42 @@ export const getUserWithStoredToken = () => {
       dispatch(logOut());
       dispatch(appDoneLoading());
     }
+  };
+};
+
+export const postArtwork = (title, minimumBid, imageUrl) => {
+  return async (dispatch, getState) => {
+    const { token, id } = selectUser(getState());
+
+    console.log("Id", id);
+
+    const userId = id;
+
+    console.log("User Id", userId);
+
+    // console.log(title, minimumBid, imageUrl);
+    dispatch(appLoading());
+
+    const response = await axios.post(
+      `${apiUrl}/artworks/auction`,
+      {
+        title,
+        minimumBid,
+        imageUrl,
+        userId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log("Yep!", response);
+    dispatch(
+      showMessageWithTimeout("success", false, response.data.message, 3000)
+    );
+    //dispatch(artworkPostSuccess(response.data.artwork));
+    dispatch(appDoneLoading());
   };
 };

@@ -21,8 +21,8 @@ export default function ArtworkDetails() {
   const { id } = useParams();
   const artwork = useSelector(selectArtworkDetails);
   const { token, email } = useSelector(selectUser);
-  console.log("Artwork", artwork);
   const [alertShow, setAlertShow] = useState(false);
+  console.log("Artwork bids", artwork.bids);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -46,11 +46,14 @@ export default function ArtworkDetails() {
   function submitBid(event) {
     event.preventDefault();
 
-    console.log("current bid", currentBid);
-    console.log("Email", email);
-    console.log("Id", id);
+    // console.log("current bid", currentBid);
+    // console.log("Email", email);
+    // console.log("Id", id);
 
-    if (currentBid > Math.max(...allBids)) {
+    if (artwork.bids === [] && currentBid > artwork.minimumBid) {
+      dispatch(postBid(currentBid, email, id));
+      setAlertShow(false);
+    } else if (currentBid > Math.max(...allBids)) {
       dispatch(postBid(currentBid, email, id));
       setAlertShow(false);
     } else {

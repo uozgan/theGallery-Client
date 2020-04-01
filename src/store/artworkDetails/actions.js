@@ -78,7 +78,6 @@ export const postBid = (amount, email, artworkId) => {
       }
     );
 
-    console.log("Yep!", response);
     dispatch(
       showMessageWithTimeout("success", false, response.data.message, 3000)
     );
