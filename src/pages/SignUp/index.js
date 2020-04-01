@@ -12,6 +12,7 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isArtist, setIsArtist] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const history = useHistory();
@@ -25,11 +26,14 @@ export default function SignUp() {
   function submitForm(event) {
     event.preventDefault();
 
-    dispatch(signUp(name, email, password));
+    //console.log("isArtist", isArtist);
+
+    dispatch(signUp(name, email, password, isArtist));
 
     setEmail("");
     setPassword("");
     setName("");
+    setIsArtist(false);
   }
 
   return (
@@ -55,11 +59,16 @@ export default function SignUp() {
             placeholder="Enter email"
             required
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
         </Form.Group>
-
+        <Form.Group>
+          {" "}
+          <Form.Check
+            type="checkbox"
+            label="I am an artist"
+            value={isArtist}
+            onChange={() => setIsArtist(!isArtist)}
+          />
+        </Form.Group>
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
