@@ -30,7 +30,7 @@ const bidPostSuccess = bid => ({
 export const fetchArtworkById = id => {
   return async (dispatch, getState) => {
     const response = await axios.get(`${apiUrl}/artworks/${id}`);
-    console.log("Response", response);
+    //console.log("Response", response);
     dispatch(artworkDetailsFetched(response.data.artwork));
   };
 };

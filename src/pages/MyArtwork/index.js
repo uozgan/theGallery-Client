@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import { useDispatch } from "react-redux";
-import { postArtwork } from "../../store/user/actions";
+import { postArtwork } from "../../store/artworks/actions";
 
 export default function MyArtwork() {
   const [title, setTitle] = useState("");
@@ -61,7 +61,7 @@ export default function MyArtwork() {
 
       <Form.Group className="mt-5">
         <Button variant="primary" type="submit" onClick={submitForm}>
-          Post!
+          Start an Auction!
         </Button>
       </Form.Group>
     </Form>

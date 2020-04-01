@@ -16,7 +16,7 @@ export default function ArtworkList() {
     dispatch(fetchArtworks());
   }, [dispatch]);
 
-  return (
+  return artworks == [] ? null : (
     <>
       <Jumbotron>
         <h1>Artwork List</h1>
@@ -32,7 +32,7 @@ export default function ArtworkList() {
               hearts={artwork.hearts}
               minimumBid={artwork.minimumBid}
               showLink={true}
-              bidCount={artwork.bids.length}
+              bidCount={artwork.bids ? artwork.bids.length : 0}
             />
           );
         })}

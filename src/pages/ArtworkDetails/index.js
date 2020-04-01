@@ -49,11 +49,12 @@ export default function ArtworkDetails() {
     // console.log("current bid", currentBid);
     // console.log("Email", email);
     // console.log("Id", id);
+    console.log("Minimumbid", artwork.minimumBid);
 
-    if (artwork.bids === [] && currentBid > artwork.minimumBid) {
+    if (artwork.bids.length === 0 && currentBid > artwork.minimumBid) {
       dispatch(postBid(currentBid, email, id));
       setAlertShow(false);
-    } else if (currentBid > Math.max(...allBids)) {
+    } else if (artwork.bids.length > 0 && currentBid > Math.max(...allBids)) {
       dispatch(postBid(currentBid, email, id));
       setAlertShow(false);
     } else {
@@ -112,7 +113,11 @@ export default function ArtworkDetails() {
               </InputGroup.Prepend>
               <FormControl
                 aria-label="Amount (to the nearest dollar)"
-                placeholder={Math.max(...allBids) + 1}
+                placeholder={
+                  allBids.length === 0
+                    ? artwork.minimumBid
+                    : Math.max(...allBids) + 1
+                }
                 onChange={event => setCurrentBid(parseInt(event.target.value))}
               />
               <InputGroup.Append>

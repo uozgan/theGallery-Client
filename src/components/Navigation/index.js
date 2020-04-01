@@ -12,7 +12,7 @@ export default function Navigation() {
   const token = useSelector(selectToken);
   const { isArtist } = useSelector(selectUser);
 
-  console.log("isArtist", isArtist);
+  //console.log("isArtist", isArtist);
 
   const loginLogoutControls = token ? <LoggedIn /> : <LoggedOut />;
 
